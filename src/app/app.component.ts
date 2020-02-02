@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'project';
+  currentView = "Recipes";
+
+
+  onNavigate(Data: string){
+    this.currentView = Data;    
+  }
+
+
 }

@@ -1,0 +1,21 @@
+.column3{
+    /*background-color: rgb(209, 204, 204);*/
+    border-radius: 25px;
+    width: 45%;
+    margin: 2%;
+    float: left;
+}
+  
+  /* Clear floats after the columns */
+  .row{
+      width: 100%;
+      margin: 0;
+      padding: 0;
+  }
+
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
