@@ -32,7 +32,13 @@ export class RecipeService {
     }
 
     getRecipeById(id){
-        return this.recipes.slice()[id]
+        return Object.assign({}, this.recipes.slice()[id]);
+        //return this.recipes.slice()[id]
+    }
+    editRecipe(id, recipe: Recipe){
+        console.log(this.recipes[id]);
+        this.recipes[id] = recipe
+        console.log(this.recipes[id]);
     }
 
     addIngredientsToShoppingList(ingredients: Ingredient[]){
@@ -40,6 +46,7 @@ export class RecipeService {
             this.SLService.addIngredient(ingredient)
         })
     }
+
 
 
 

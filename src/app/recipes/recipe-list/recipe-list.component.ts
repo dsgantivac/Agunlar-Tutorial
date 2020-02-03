@@ -1,6 +1,7 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, DoCheck} from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
+import { Router, RoutesRecognized, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-list',
@@ -8,16 +9,24 @@ import { RecipeService } from '../recipe.service';
   styleUrls: ['./recipe-list.component.css'],
 
 })
-export class RecipeListComponent implements OnInit {
+export class RecipeListComponent implements OnInit, DoCheck {
   
   recipes: Recipe[] = null
 
 
-  constructor(private recipeService: RecipeService) { 
+  constructor(private recipeService: RecipeService, private routes: Router, private route: ActivatedRoute) { 
   }
   
   ngOnInit() {
+  }
+  
+  ngDoCheck() {
     this.recipes = this.recipeService.getRecipes();
+  }
+
+  onNewRecipe(){
+    console.log("new recipe");
+    this.routes.navigate(['/recipes','new'])
   }
 
 }

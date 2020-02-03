@@ -1,0 +1,19 @@
+
+<div *ngIf="editMode; else idInvalid">
+    <fieldset>
+        <div class="form-group">
+            <label for="disabledTextInput">Recipe name</label>
+            <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input" [(ngModel)]="recipe.name">
+        </div>
+        <div class="form-group">
+            <label for="disabledTextInput">Disabled input</label>
+            <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input"
+            [(ngModel)]="recipe.description">
+        </div>
+        <button type="submit" class="btn btn-primary" (click)="editRecipe()">Edit</button>
+    </fieldset>
+</div>
+
+<ng-template #idInvalid>
+    <h1>Id no valido mi perro</h1>
+</ng-template>
