@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Routes, Router } from '@angular/router';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
-import { isEmptyExpression } from '@angular/compiler';
-import { relative } from 'path';
 
 @Component({
   selector: 'app-recipe-edit',
