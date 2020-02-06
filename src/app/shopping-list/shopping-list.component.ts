@@ -12,13 +12,22 @@ import { Subscription } from 'rxjs';
 export class ShoppingListComponent implements OnInit {
   ingredients: Ingredient[];
   private newIngredientSubs: Subscription
+  private changeSubs: Subscription
+
 
   constructor(private shoppingListService: ShoppingListService) { }
 
   ngOnInit() {
+    
+    //update ingredients if new ingredient is created
     this.ingredients = this.shoppingListService.getIngredients()
     this.newIngredientSubs = this.shoppingListService.newIngredient.subscribe((ingredient: Ingredient) => {
       this.shoppingListService.addIngredient(ingredient);
+      this.ingredients = this.shoppingListService.getIngredients()
+    })
+    
+    //edit ingredients if change is made
+    this.changeSubs = this.shoppingListService.editChange.subscribe(change => {
       this.ingredients = this.shoppingListService.getIngredients()
     })
   }
@@ -27,6 +36,10 @@ export class ShoppingListComponent implements OnInit {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     this.newIngredientSubs.unsubscribe()
+  }
+
+  onEditItem(index: number){
+    this.shoppingListService.startedEditing.next(index);
   }
 
 }
