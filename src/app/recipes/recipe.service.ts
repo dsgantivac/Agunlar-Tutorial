@@ -8,6 +8,8 @@ import { Subject } from 'rxjs'
 export class RecipeService {
     recipeChange = new Subject<boolean>();
 
+    private recipes: Recipe[] = []
+/*
     private recipes: Recipe[] = [
         new Recipe("A test recipe",
             "This is a simpy test",
@@ -20,10 +22,9 @@ export class RecipeService {
         new Recipe("A test recipe 3",
             "This is a simpy third test",
             "https://images-gmi-pmc.edge-generalmills.com/a0f37125-bb72-4910-9d48-772555de6224.jpg",
-            [new Ingredient("Cheese",4), new Ingredient("Eggs",8) ])
-        
-        
+            [new Ingredient("Cheese",4), new Ingredient("Eggs",8) ])  
     ]
+    */
 
     constructor(private SLService: ShoppingListService) {
 
@@ -31,6 +32,11 @@ export class RecipeService {
 
     addRecipe(recipe: Recipe) {
         this.recipes.push(recipe)
+        this.recipeChange.next(true)
+    }
+
+    setRecipes(recipes: Recipe[]){
+        this.recipes = recipes;
         this.recipeChange.next(true)
     }
 

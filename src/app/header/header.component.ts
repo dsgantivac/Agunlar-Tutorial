@@ -1,25 +1,26 @@
 import { Component, OnInit, Output, EventEmitter, DoCheck } from '@angular/core';
+import { DataStorageService } from '../shared/data.storage.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, DoCheck {
+export class HeaderComponent implements OnInit {
   @Output('DataOut') viewSelected = new EventEmitter<string>();  
   view = "Recipes"
 
-  constructor() { }
+  constructor(private dataStorageService: DataStorageService) { }
 
   ngOnInit() {
   }
 
-  ngDoCheck(){    
+  onSaveData(){
+    this.dataStorageService.storeRecipes()
   }
 
-  changeView(view){
-    this.view = view;
-    this.viewSelected.emit(view)
+  onFetchData(){
+    this.dataStorageService.fetchRecipes().subscribe();
   }
 
 }
