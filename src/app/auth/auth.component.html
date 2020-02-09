@@ -1,6 +1,9 @@
 <div class="container">
     <div class="col-xs-12">
-        <form (ngSubmit)="onSubmit()" [formGroup]="authForm">
+        <div style="text-align: center;">
+            <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+        </div>
+        <form (ngSubmit)="onSubmit()" [formGroup]="authForm" *ngIf="!isLoading">
             <div class="form-group">
                 <label for="email">E-Mail</label>
                 <input type="email" id="email" class="form-control" formControlName="email">
@@ -10,9 +13,19 @@
                 <input type="password" id="password" class="form-control" formControlName="password">
             </div>
             <div>
-                <button class="btn btn-primary" type="submit" [disabled]="!authForm.valid">Sign Up</button> |
-                <button class="btn btn-primary" type="button">Switch to Login</button>
+                <button class="btn btn-primary" type="submit"
+                    [disabled]="!authForm.valid">{{ isLoginMode ? "Login" : "Sign Up"}}</button> |
+                <button class="btn btn-primary" type="button" (click)="onSwitchMode()">Switch to
+                    {{ !isLoginMode ? "Login" : "Sign Up"}}</button>
             </div>
         </form>
+        <br>
+        <div class="panel panel-danger" *ngIf="error">
+            <div class="panel-heading">An error ocurr!!</div>
+            <div class="panel-body">
+                {{error}}
+            </div>
+            <button class="btn btn-danger">Ok</button>
+        </div>
     </div>
 </div>
