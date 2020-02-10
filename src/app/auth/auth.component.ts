@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthService } from './auth.service';
+import { AuthService, AuthResponseData } from './auth.service';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -13,7 +15,9 @@ export class AuthComponent implements OnInit {
   authForm:FormGroup
   isLoading = false
   error = null
-  constructor(private authService: AuthService) { }
+  authObs = new Observable<AuthResponseData>()
+
+  constructor(private authService: AuthService, private routes: Router ) { }
 
   ngOnInit() {
     this.authForm = new FormGroup({
@@ -23,33 +27,33 @@ export class AuthComponent implements OnInit {
   }
 
   onSubmit(){
+    this.error = null
     const email = this.authForm.value.email;
     const password = this.authForm.value.password
     this.isLoading = true
     if(!this.isLoginMode){
-      this.authService.signup(email,password).subscribe(data => {
-        console.log(data);
-        this.isLoading = false
-      }, err => {
-        console.log(err)
-        this.isLoading = false        
-        this.error = err.error.error.message
-      })
-      //this.authForm.reset({email: this.authForm.value.email})
+      this.authObs = this.authService.signup(email,password)
     }else{
-      this.authService.login(email, password).subscribe(data => {
-        console.log(data);
-        this.isLoading = false
-      }, err => {
-        console.log(err);
-        this.isLoading = false
-        this.error = err.message
-      })
+      this.authObs = this.authService.login(email, password)
     }
+    this.authObs.subscribe(data => {
+      console.log(data);
+      this.isLoading = false
+      this.routes.navigate(['/recipes'])
+    }, err => {
+      console.log(err)
+      this.isLoading = false        
+      this.error = err.error.error.message
+    })
+    //this.authForm.reset({email: this.authForm.value.email})
   }
 
   onSwitchMode(){
     this.isLoginMode = !this.isLoginMode    
+  }
+
+  clearError(){
+    this.error = null
   }
 
 }

@@ -21,11 +21,14 @@
         </form>
         <br>
         <div class="panel panel-danger" *ngIf="error">
-            <div class="panel-heading">An error ocurr!!</div>
+            <div class="panel-heading">An error ocurred!!</div>
             <div class="panel-body">
                 {{error}}
             </div>
-            <button class="btn btn-danger">Ok</button>
+            <div style="text-align: right;">
+                <button class="btn btn-danger" style="margin: 10px;"  (click)="clearError()"> Ok </button>
+
+            </div>
         </div>
     </div>
 </div>
