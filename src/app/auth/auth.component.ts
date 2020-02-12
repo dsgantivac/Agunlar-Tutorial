@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService, AuthResponseData } from './auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { AlertComponent } from '../shared/alert/alert.component';
+import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
 
 @Component({
   selector: 'app-auth',
@@ -17,7 +19,10 @@ export class AuthComponent implements OnInit {
   error = null
   authObs = new Observable<AuthResponseData>()
 
-  constructor(private authService: AuthService, private routes: Router ) { }
+  constructor(private authService: AuthService, private routes: Router, private componentFactoryResolver: ComponentFactoryResolver ) { }
+  //find first ocurrence of the directive
+  @ViewChild(PlaceholderDirective, {static: false}) alertHost: PlaceholderDirective
+  private closeSubs: Subscription
 
   ngOnInit() {
     this.authForm = new FormGroup({
@@ -44,6 +49,7 @@ export class AuthComponent implements OnInit {
       console.log(err)
       this.isLoading = false        
       this.error = err.error.error.message
+      this.showErrorAlert(this.error)
     })
     //this.authForm.reset({email: this.authForm.value.email})
   }
@@ -56,4 +62,23 @@ export class AuthComponent implements OnInit {
     this.error = null
   }
 
+  onCloseError(){
+    this.error = null
+  }
+
+  showErrorAlert(message: string){
+    //need to aded to entrycomponents in app.modules
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(
+      AlertComponent
+      );
+    
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+    hostViewContainerRef.clear() //remove elements
+    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory) //add component and store in reference for data and event biding
+    componentRef.instance.message = message
+    this.closeSubs = componentRef.instance.close.subscribe(() => {
+      this.closeSubs.unsubscribe()
+      hostViewContainerRef.clear()
+    })
+  }
 }

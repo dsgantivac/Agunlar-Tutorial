@@ -1,8 +1,10 @@
 <div class="container">
     <div class="col-xs-12">
+    
         <div style="text-align: center;">
             <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
         </div>
+        
         <form (ngSubmit)="onSubmit()" [formGroup]="authForm" *ngIf="!isLoading">
             <div class="form-group">
                 <label for="email">E-Mail</label>
@@ -20,15 +22,25 @@
             </div>
         </form>
         <br>
-        <div class="panel panel-danger" *ngIf="error">
-            <div class="panel-heading">An error ocurred!!</div>
-            <div class="panel-body">
+        <ng-template appPlaceholder></ng-template>
+        
+
+        <!-- 
+            <app-alert [message]="error" *ngIf="error"  (close)="onCloseError()"></app-alert>
+        -->
+        
+        <!-- 
+
+            <div class="panel panel-danger" *ngIf="error">
+                <div class="panel-heading">An error ocurred!!</div>
+                <div class="panel-body">
                 {{error}}
             </div>
             <div style="text-align: right;">
                 <button class="btn btn-danger" style="margin: 10px;"  (click)="clearError()"> Ok </button>
-
+                
             </div>
-        </div>
+            </div>
+        -->
     </div>
 </div>
