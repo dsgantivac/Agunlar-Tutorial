@@ -24,7 +24,7 @@
                     <br>
                     <button class="btn btn-primary" type="button" (click)="addIngredient()">Add ingredient</button>
                 </div>
-                <div *ngFor="let ingredientControl of recipeFormGroup.get('ingredients').controls; let i = index">
+                <div *ngFor="let ingredientControl of ingredientsControls; let i = index">
                     <div [formGroupName]="i">
                         <div class="col-sm-4 form-group">
                             <label for="name">Name</label>

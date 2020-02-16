@@ -1,21 +1,15 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ShoppingListComponent } from './shopping-list/shopping-list.component';
-import { RecipesComponent } from './recipes/recipes.component';
-import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
-import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
-import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
-import { RecipesResolverService } from './recipes/recipes-resolver.service';
-import { AuthComponent } from './auth/auth.component';
-import { AuthGuard } from './auth/auth.guard';
-
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 const routes: Routes = [
-  {path: '',  redirectTo: "/recipes", pathMatch: "full"}
+  {path: '',  redirectTo: "/recipes", pathMatch: "full"},
+  {path: 'recipes',  loadChildren: './recipes/recipes.module#RecipesModule' }, // IMPORTANT (remove RecipesModule from app module) for lazy loading
+  {path: 'auth',  loadChildren: './auth/auth.module#AuthModule' }, // IMPORTANT (remove RecipesModule from app module)
+  {path: 'shopping-list',  loadChildren: './shopping-list/shopping-list.module#ShoppingListModule' } // IMPORTANT (remove RecipesModule from app module)
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})], // PreloadAllModules load all components in background
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
